@@ -5,7 +5,7 @@ bool ServerPool::hasFreeServer() const{
     return !free_server_index.empty();
 }
 
-Server ServerPool::getServer(){
+Server& ServerPool::getServer(){
     int index = free_server_index.front();
     free_server_index.pop();
     all_server[index].is_free = false;

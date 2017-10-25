@@ -1,6 +1,5 @@
 
 #include "fileQueue.h"
-#include <iostream>
 
 void FileQueue::add(const File &f){
     file_queue.push(f);

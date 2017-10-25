@@ -9,7 +9,7 @@ using namespace std;
 
 class ServerPool{
 public:
-    Server getServer();
+    Server& getServer();
 
     bool hasFreeServer() const;
 
@@ -22,8 +22,6 @@ public:
     int serverNumber() const;
 
     int freeServerNumber() const;
-
-    int poolSize() const {return all_server.size();}
 
 private:
 

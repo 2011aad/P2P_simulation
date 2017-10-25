@@ -3,8 +3,6 @@
 
 #include "block.h"
 #include <queue>
-#include <vector>
-#include <iostream>
 
 using namespace std;
 
@@ -18,7 +16,7 @@ public:
         }
     }
 
-    File(const File &f):numOfBlock(f.numOfBlock), empty_blocks(f.empty_blocks), remain_block(f.remain_block),all_blocks(f.all_blocks){}
+    File(const File &f):numOfBlock(f.numOfBlock), empty_blocks(f.empty_blocks), remain_block(f.remain_block), all_blocks(f.all_blocks){}
 
     File& operator=(const File& f){
         if(this==&f) return *this;
@@ -40,10 +38,8 @@ public:
     bool allBlockServed() const {return remain_block==0;}
 
     void blockServed(const Block &b){
+        all_blocks[b.id] = b;
         --remain_block;
-        if(b.id>=0 && b.id<numOfBlock){
-            all_blocks[b.id] = b;
-        }
     }
 
     int remainBlockNumber() const {return remain_block;}

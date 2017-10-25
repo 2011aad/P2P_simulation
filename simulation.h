@@ -4,6 +4,7 @@
 #include "serverPool.h"
 #include "fileQueue.h"
 #include "event.h"
+#include "block.h"
 #include <random>
 #include <ctime>
 #include <iostream>

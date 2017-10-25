@@ -1,3 +1,4 @@
+
 #include "file.h"
 
 bool File::hasEmptyBlock() const{
@@ -11,7 +12,6 @@ Block& File::getEmptyBlock(){
 }
 
 void File::returnEmptyBlock(const Block &b){
-    if(b.id<0 || b.id>numOfBlock) return;
-    all_blocks[b.id] = b;
     empty_blocks.push(b.id);
+    all_blocks[b.id] = b;
 }

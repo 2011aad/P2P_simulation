@@ -15,8 +15,8 @@ void Simulation::run(){
     }
 
     for(int i=0;i<start_server_number;++i){
-        Server s(numOfBlock*mu_c, mu_s, system_time);
-        event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, serv_pool.add(s)));
+        Server s(mu_c*numOfBlock, mu_s, system_time);
+        event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, -1, serv_pool.add(s)));
     }
 
     //create a server arrival event and a file arrival event, later arrivals occurs after handling current arrival events
@@ -38,15 +38,13 @@ void Simulation::run(){
         while(file_queue.empty()){
             auto e = event_queue.top();
             event_queue.pop();
+
             system_time = e.getTime();
 
             if(e.event_type==Event::SERVER_ARRIVAL){
                 Observe();
-
-                if(serv_pool.serverNumber()<50*start_server_number){
-                    Server s(numOfBlock*mu_c, mu_s, system_time);
-                    event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, serv_pool.add(s)));
-                }
+                Server s(mu_c*numOfBlock, mu_s, system_time);
+                event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, -1, serv_pool.add(s)));
                 expdist = exponential_distribution<double>(lambda_s);
                 event_queue.push(Event(Event::SERVER_ARRIVAL, system_time + expdist(rand_engine)));
             }
@@ -73,12 +71,11 @@ void Simulation::run(){
             Server s = serv_pool.getServer();
             Block b = f.getEmptyBlock();
             auto time_success_pair = s.upload(system_time, b);
-
             if(time_success_pair.second){
                 event_queue.push(Event(Event::BLOCK_SERVED, time_success_pair.first, b, s.id));
             }
             else{
-                event_queue.push(Event(Event::RELEASE_BLOCK, time_success_pair.first, b, -1));
+                event_queue.push(Event(Event::RELEASE_BLOCK, time_success_pair.first, b));
             }
         }
 
@@ -88,15 +85,12 @@ void Simulation::run(){
             event_queue.pop();
 
             system_time = e.getTime();
-            //cout<<e.getType()<<endl;
-            //cout<<file_queue.size()<<endl;
+
             //handling SERVER_ARRIVAL event: create another SERVER_ARRIVAL event
             if(e.event_type==Event::SERVER_ARRIVAL){
                 Observe();
-                if(serv_pool.serverNumber()<50*start_server_number){
-                    Server s(numOfBlock*mu_c, mu_s, system_time);
-                    event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, serv_pool.add(s)));
-                }
+                Server s(mu_c*numOfBlock, mu_s, system_time);
+                event_queue.push(Event(Event::SERVER_LEAVE, s.leave_time, -1, serv_pool.add(s)));
                 expdist = exponential_distribution<double>(lambda_s);
                 event_queue.push(Event(Event::SERVER_ARRIVAL, system_time + expdist(rand_engine)));
             }
@@ -131,7 +125,7 @@ void Simulation::run(){
                     event_queue.push(Event(Event::BLOCK_SERVED, time_success_pair.first, b, s.id));
                 }
                 else{
-                    event_queue.push(Event(Event::RELEASE_BLOCK, time_success_pair.first, b, -1));
+                    event_queue.push(Event(Event::RELEASE_BLOCK, time_success_pair.first, b));
                 }
             }
         }

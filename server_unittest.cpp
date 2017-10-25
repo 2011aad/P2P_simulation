@@ -32,6 +32,7 @@ TEST_F(ServerTest, ServerTest_upload_constant){
         auto time_success_pair = server.upload(0, b);
         if(time_success_pair.second) total_time += time_success_pair.first;
     }
+    ASSERT_EQ(b.downloaded_size, b.block_size);
     ASSERT_NEAR(total_time, 1e-3, 1e-6);
     ASSERT_EQ(b.id, -1);
 }
