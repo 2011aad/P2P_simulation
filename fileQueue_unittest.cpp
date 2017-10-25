@@ -19,8 +19,10 @@ TEST_F(fileQueueTest, FileQueue_size){
 }
 
 TEST_F(fileQueueTest, FileQueue_add){
-    fq.add(File(10));
-    ASSERT_EQ(fq.size(), 11);
+    for(int i=1;i<10000;++i){
+        fq.add(File(100));
+        ASSERT_EQ(fq.size(), i+10);
+    }
 }
 
 TEST_F(fileQueueTest, FileQueue_front){

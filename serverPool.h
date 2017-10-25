@@ -23,6 +23,8 @@ public:
 
     int freeServerNumber() const;
 
+    int poolSize() const {return all_server.size();}
+
 private:
 
     vector<Server> all_server;

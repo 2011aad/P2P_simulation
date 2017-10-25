@@ -3,6 +3,7 @@
 
 
 #include "event.h"
+#include "block.h"
 #include <ctime>
 #include <random>
 
@@ -45,6 +46,7 @@ public:
 
 
     pair<double, bool> upload(double start_time, int block_num);
+    pair<double, bool> upload(double start_time, Block& b);
 
 private:
     double service_rate;

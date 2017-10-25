@@ -4,13 +4,14 @@ bool File::hasEmptyBlock() const{
     return !empty_blocks.empty();
 }
 
-int File::getEmptyBlock(){
+Block& File::getEmptyBlock(){
     int x = empty_blocks.front();
     empty_blocks.pop();
-    return x;
+    return all_blocks[x];
 }
 
-void File::returnEmptyBlock(int block_num){
-    empty_blocks.push(block_num);
+void File::returnEmptyBlock(const Block &b){
+    if(b.id<0 || b.id>numOfBlock) return;
+    all_blocks[b.id] = b;
+    empty_blocks.push(b.id);
 }
-
